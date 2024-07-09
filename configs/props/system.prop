@@ -25,6 +25,9 @@ media.stagefright.thumbnail.prefer_hw_codecs=true
 mmp.enable.3g2=true
 persist.mm.enable.prefetch=true
 
+# Pre-Rendering
+ro.vendor.perf.scroll_opt=true
+
 # Radio
 ril.subscription.types=RUIM
 
