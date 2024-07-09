@@ -12,6 +12,7 @@ debug.performance.tuning=1
 
 # Disable Skia tracing by default
 debug.hwui.skia_atrace_enabled=false
+debug.hwui.skia_use_perfetto_track_events=false
 
 # FUSE
 persist.sys.fuse.passthrough.enable=true
