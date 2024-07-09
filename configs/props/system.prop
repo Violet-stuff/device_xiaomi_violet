@@ -34,5 +34,8 @@ ril.subscription.types=RUIM
 # Recovery
 ro.recovery.ui.margin_height=48
 
+# Render
+debug.cpurend.vsync=false
+
 # WiFi
 wifi.interface=wlan0
