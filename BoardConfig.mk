@@ -14,10 +14,10 @@
 # limitations under the License.
 #
 
-COMMON_PATH := device/xiaomi/sm6150-common
+DEVICE_PATH := device/xiaomi/violet
 
 # Inherit from proprietary files
-include vendor/xiaomi/sm6150-common/BoardConfigVendor.mk
+include vendor/xiaomi/violet/BoardConfigVendor.mk
 
 # Architecture
 TARGET_ARCH := arm64
@@ -40,12 +40,19 @@ AUDIO_FEATURE_ENABLED_EXTENDED_COMPRESS_FORMAT := true
 BOARD_SUPPORTS_OPENSOURCE_STHAL := true
 BOARD_SUPPORTS_SOUND_TRIGGER := true
 
+AUDIO_FEATURE_ENABLED_GEF_SUPPORT := true
+AUDIO_FEATURE_ENABLED_INSTANCE_ID := true
+BOARD_USES_ALSA_AUDIO := true
+
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := sm6150
 TARGET_NO_BOOTLOADER := true
 
+# Display
+TARGET_SCREEN_DENSITY := 440
+
 # Filesystem
-TARGET_FS_CONFIG_GEN := $(COMMON_PATH)/configs/config.fs
+TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/configs/config.fs
 
 # GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
@@ -56,10 +63,10 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     hardware/xiaomi/vintf/xiaomi_framework_compatibility_matrix.xml \
     vendor/lineage/config/device_framework_matrix.xml
 
-DEVICE_MANIFEST_FILE := $(COMMON_PATH)/configs/hidl/manifest.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/configs/hidl/manifest.xml
 DEVICE_MANIFEST_FILE += hardware/qcom-caf/sm8150/media/conf_files/sm6150/c2_manifest.xml
 DEVICE_MATRIX_FILE := hardware/qcom-caf/common/compatibility_matrix.xml
-ODM_MANIFEST_FILES += $(COMMON_PATH)/configs/hidl/manifest-qva.xml
+ODM_MANIFEST_FILES += $(DEVICE_PATH)/configs/hidl/manifest-qva.xml
 
 # Kernel
 BOARD_KERNEL_BASE := 0x00000000
@@ -69,12 +76,14 @@ BOARD_KERNEL_SEPARATED_DTBO := true
 
 TARGET_KERNEL_SOURCE := kernel/xiaomi/sm6150
 TARGET_KERNEL_CONFIG := vendor/sdmsteppe-perf_defconfig
+TARGET_KERNEL_CONFIG += vendor/violet.config
 
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0x880000
 BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom androidboot.console=ttyMSM0
 BOARD_KERNEL_CMDLINE += service_locator.enable=1
 BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1
 BOARD_KERNEL_CMDLINE += loop.max_part=7
+BOARD_KERNEL_CMDLINE += androidboot.fstab_suffix=emmc
 
 # Enable DTB in bootimage and set header version
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
@@ -86,6 +95,21 @@ TARGET_USES_ION := true
 
 # Partitions
 -include vendor/lineage/config/BoardConfigReservedSize.mk
+
+BOARD_BOOTIMAGE_PARTITION_SIZE := 0x04000000
+BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
+BOARD_DTBOIMG_PARTITION_SIZE := 0x0800000
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
+
+BOARD_SUPER_PARTITION_CUST_DEVICE_SIZE := 872415232
+BOARD_SUPER_PARTITION_SYSTEM_DEVICE_SIZE := 3758096384
+BOARD_SUPER_PARTITION_VENDOR_DEVICE_SIZE := 2147483648
+BOARD_SUPER_PARTITION_SIZE := 6777995264
+
+BOARD_SUPER_PARTITION_BLOCK_DEVICES := cust system vendor
+BOARD_SUPER_PARTITION_METADATA_DEVICE := system
+
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 6773800960 # (BOARD_SUPER_PARTITION_SIZE - 4194304) 4MiB overhead
 
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 
@@ -107,19 +131,20 @@ TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 TARGET_COPY_OUT_VENDOR := vendor
 
 # Platform
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno612
 TARGET_BOARD_PLATFORM := sm6150
 
 # Properties
-TARGET_ODM_PROP += $(COMMON_PATH)/odm.prop
-TARGET_SYSTEM_PROP += $(COMMON_PATH)/system.prop
-TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
+TARGET_ODM_PROP += $(DEVICE_PATH)/odm.prop
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # QCOM
 BOARD_USES_QCOM_HARDWARE := true
 
 # Recovery
 BOARD_INCLUDE_RECOVERY_DTBO := true
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/rootdir/etc/recovery.fstab
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/recovery.fstab
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
@@ -129,16 +154,19 @@ ENABLE_VENDOR_RIL_SERVICE := true
 
 # Releasetools
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_xiaomi
-TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)
+TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)
 
 # Sepolicy
 TARGET_SEPOLICY_DIR := msmsteppe
 include device/lineage/sepolicy/libperfmgr/sepolicy.mk
 include device/qcom/sepolicy_vndr/SEPolicy.mk
 
-SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
-SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/public
-BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
+SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
+SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
+BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+
+# Security
+VENDOR_SECURITY_PATCH := 2021-08-01
 
 # Soong
 SOONG_CONFIG_NAMESPACES += xiaomiSm6150Vars
