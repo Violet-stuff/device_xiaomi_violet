@@ -13,11 +13,11 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Inherit from violet device
 $(call inherit-product, device/xiaomi/violet/sm6150.mk)
 
-# Inherit some common LineageOS stuff.
-$(call inherit-product, vendor/aosp/config/common_full_phone.mk)
+# Inherit some common Voltage stuff.
+$(call inherit-product, vendor/voltage/config/common_full_phone.mk)
 
 # Device identifier. This must come after all inclusions.
-PRODUCT_NAME := aosp_violet
+PRODUCT_NAME := voltage_violet
 PRODUCT_DEVICE := violet
 PRODUCT_BRAND := xiaomi
 PRODUCT_MODEL := Redmi Note 7 Pro
@@ -27,4 +27,19 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildDesc="violet-user 10 QKQ1.190915.002 V12.5.1.0.QFHINXM release-keys" \
     BuildFingerprint="xiaomi/violet/violet:10/QKQ1.190915.002/V12.5.1.0.QFHINXM:user/release-keys"
 
+# GMS
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
+
+# Voltage Flags
+TARGET_BOOT_ANIMATION_RES := 1920
+TARGET_FACE_UNLOCK_SUPPORTED := true
+VOLTAGE_BUILD_TYPE := UNOFFICIAL
+
+# VoltageOS CPUsets configuration.
+VOLTAGE_CPU_SMALL_CORES := 0,1,2,3,4,5
+VOLTAGE_CPU_BIG_CORES := 6,7
+VOLTAGE_CPU_UNLIMIT_UI := 0-7
+VOLTAGE_CPU_BG := 0-3
+VOLTAGE_CPU_FG := 0-7
+VOLTAGE_CPU_LIMIT_BG := 0-2
+VOLTAGE_CPU_LIMIT_UI := 0-5
