@@ -13,11 +13,22 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # Inherit from violet device
 $(call inherit-product, device/xiaomi/violet/sm6150.mk)
 
-# Inherit some common Voltage stuff.
-$(call inherit-product, vendor/voltage/config/common_full_phone.mk)
+# Inherit some common Clover Project stuff.
+$(call inherit-product, vendor/clover/config/common_full_phone.mk)
+
+# Bootanimation Resolution
+TARGET_BOOT_ANIMATION_RES := 1080
+
+# Clover Project Flags
+CLOVER_BUILDTYPE := OFFICIAL
+TARGET_FACE_UNLOCK_SUPPORTED := true
+TARGET_SUPPORTS_GOOGLE_RECORDER := true
+TARGET_SUPPORTS_QUICK_TAP := true
+USE_PIXEL_CHARGER := true
+CLOVER_MAINTAINER := RainZ
 
 # Device identifier. This must come after all inclusions.
-PRODUCT_NAME := voltage_violet
+PRODUCT_NAME := clover_violet
 PRODUCT_DEVICE := violet
 PRODUCT_BRAND := xiaomi
 PRODUCT_MODEL := Redmi Note 7 Pro
@@ -29,17 +40,3 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
 
 # GMS
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
-
-# Voltage Flags
-TARGET_BOOT_ANIMATION_RES := 1920
-TARGET_FACE_UNLOCK_SUPPORTED := true
-VOLTAGE_BUILD_TYPE := UNOFFICIAL
-
-# VoltageOS CPUsets configuration.
-VOLTAGE_CPU_SMALL_CORES := 0,1,2,3,4,5
-VOLTAGE_CPU_BIG_CORES := 6,7
-VOLTAGE_CPU_UNLIMIT_UI := 0-7
-VOLTAGE_CPU_BG := 0-3
-VOLTAGE_CPU_FG := 0-7
-VOLTAGE_CPU_LIMIT_BG := 0-2
-VOLTAGE_CPU_LIMIT_UI := 0-5
